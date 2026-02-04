@@ -7,6 +7,7 @@ unsupported formats using FFmpeg.
 """
 
 import os
+import shutil
 import tempfile
 from pathlib import Path
 from typing import Optional, Tuple
@@ -57,6 +58,16 @@ class AudioConverter:
     """Handles audio format conversion using FFmpeg."""
 
     @staticmethod
+    def is_ffmpeg_available() -> bool:
+        """
+        Check if FFmpeg is available in the system.
+
+        Returns:
+            bool: True if FFmpeg is installed and available, False otherwise
+        """
+        return shutil.which("ffmpeg") is not None
+
+    @staticmethod
     def convert_to_wav(input_path: str, output_path: str) -> bool:
         """
         Convert an audio file to WAV format using FFmpeg.
@@ -68,6 +79,19 @@ class AudioConverter:
         Returns:
             bool: True if conversion was successful, False otherwise
         """
+        # Check if FFmpeg is available
+        if not AudioConverter.is_ffmpeg_available():
+            st.error(
+                "❌ **FFmpeg is not installed or not found in PATH.**\n\n"
+                "FFmpeg is required to convert video files and unsupported audio formats.\n\n"
+                "**Installation Instructions:**\n"
+                "- **Ubuntu/Debian:** `sudo apt update && sudo apt install ffmpeg`\n"
+                "- **macOS:** `brew install ffmpeg`\n"
+                "- **Windows:** Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH\n\n"
+                "After installing FFmpeg, restart the application."
+            )
+            return False
+
         try:
             (
                 ffmpeg
