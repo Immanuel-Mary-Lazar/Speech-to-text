@@ -104,12 +104,6 @@ class AudioConverter:
         except ffmpeg.Error as e:
             st.error(f"FFmpeg conversion error: {e.stderr.decode()}")
             return False
-        except FileNotFoundError:
-            st.error(
-                "❌ **FFmpeg executable not found.**\n\n"
-                "Please ensure FFmpeg is installed and available in your system PATH."
-            )
-            return False
         except Exception as e:
             st.error(f"Unexpected error during conversion: {str(e)}")
             return False
