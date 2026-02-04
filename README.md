@@ -9,13 +9,22 @@ A professional Streamlit web application for converting audio files to text usin
 - 📝 **Easy Copy**: Built-in copy-to-clipboard functionality for transcribed text
 - 🚀 **Fast Processing**: AI-powered speech recognition with FunASR
 - 💎 **Professional UI**: Clean and intuitive Streamlit interface
+- ⚡ **Auto-Setup**: Automatically installs FFmpeg if not present (on supported platforms)
 
 ## Prerequisites
 
 - Python 3.8 or higher
-- FFmpeg installed on your system
+- FFmpeg (automatically installed on Streamlit Cloud and Linux systems)
 
-### Installing FFmpeg
+### FFmpeg Installation
+
+**The application now includes automatic FFmpeg installation!** 
+
+For **Streamlit Cloud** deployments, FFmpeg is automatically installed via the `packages.txt` file.
+
+For **local Linux systems**, the application will attempt to install FFmpeg automatically on first run.
+
+For **manual installation** (macOS, Windows, or if auto-install fails):
 
 **Ubuntu/Debian:**
 ```bash
