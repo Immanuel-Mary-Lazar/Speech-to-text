@@ -26,11 +26,16 @@ def install_ffmpeg_linux() -> bool:
     """
     Attempt to install FFmpeg on Linux systems using apt-get.
     
+    Note: This function requires sudo privileges. If running in an environment
+    without sudo access, ensure FFmpeg is pre-installed or use packages.txt
+    for Streamlit Cloud deployments.
+    
     Returns:
         bool: True if installation was successful, False otherwise
     """
     try:
         print("Attempting to install FFmpeg using apt-get...")
+        print("Note: This requires sudo privileges")
         
         # Update package list
         subprocess.run(
@@ -58,7 +63,7 @@ def install_ffmpeg_linux() -> bool:
         print("❌ Installation timed out")
         return False
     except FileNotFoundError:
-        print("❌ apt-get not found. Please install FFmpeg manually.")
+        print("❌ apt-get or sudo not found. Please install FFmpeg manually.")
         return False
     except Exception as e:
         print(f"❌ Unexpected error during installation: {e}")
@@ -73,9 +78,13 @@ def check_streamlit_cloud() -> bool:
         bool: True if running in Streamlit Cloud, False otherwise
     """
     # Streamlit Cloud sets specific environment variables
+    # Check for various possible truthy values
+    streamlit_mode = os.environ.get("STREAMLIT_SHARING_MODE")
+    headless = os.environ.get("STREAMLIT_SERVER_HEADLESS", "").lower()
+    
     return (
-        os.environ.get("STREAMLIT_SHARING_MODE") is not None or
-        os.environ.get("STREAMLIT_SERVER_HEADLESS") == "true"
+        streamlit_mode is not None or
+        headless in ("true", "1", "yes")
     )
 
 
@@ -141,7 +150,7 @@ def setup_ffmpeg() -> bool:
     print("=" * 60)
     print("\nPlease install FFmpeg manually:")
     print("\n**Ubuntu/Debian:**")
-    print("  sudo apt update && sudo apt install ffmpeg")
+    print("  sudo apt-get update && sudo apt-get install ffmpeg")
     print("\n**macOS:**")
     print("  brew install ffmpeg")
     print("\n**Windows:**")
