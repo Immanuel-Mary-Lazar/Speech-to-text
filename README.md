@@ -140,7 +140,6 @@ This project is open source and available under the MIT License.
 
 ## Acknowledgments
 
-- [FunASR](https://github.com/alibaba-damo-academy/FunASR) - Speech recognition framework
-- [FunASR-ONNX](https://github.com/modelscope/FunASR) - Lightweight ONNX Runtime implementation
+- [FunASR](https://github.com/alibaba-damo-academy/FunASR) - Speech recognition framework (includes ONNX Runtime implementation)
 - [Streamlit](https://streamlit.io/) - Web application framework
 - [FFmpeg](https://ffmpeg.org/) - Audio/video processing
