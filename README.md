@@ -1,13 +1,14 @@
 # Speech-to-Text Converter 🎤
 
-A professional Streamlit web application for converting audio files to text using FunASR (Fun Automatic Speech Recognition). The application supports multiple audio and video formats with automatic conversion capabilities.
+A professional Streamlit web application for converting audio files to text using FunASR-ONNX (Fun Automatic Speech Recognition with ONNX Runtime). The application uses lightweight ONNX models for efficient speech recognition with reduced dependencies, supporting multiple audio and video formats with automatic conversion capabilities.
 
 ## Features
 
 - 🎵 **Multiple Format Support**: Handles WAV, MP3, FLAC, M4A, OGG, WMA, AAC, MP4, AVI, MKV, MOV, and more
 - 🔄 **Automatic Conversion**: Uses FFmpeg to convert unsupported formats automatically
 - 📝 **Easy Copy**: Built-in copy-to-clipboard functionality for transcribed text
-- 🚀 **Fast Processing**: AI-powered speech recognition with FunASR
+- 🚀 **Fast Processing**: AI-powered speech recognition with lightweight FunASR-ONNX models
+- ⚡ **Lightweight**: Uses ONNX Runtime instead of PyTorch for smaller dependency footprint
 - 💎 **Professional UI**: Clean and intuitive Streamlit interface
 - ⚡ **Auto-Setup**: Automatically installs FFmpeg if not present (on supported platforms)
 
@@ -99,9 +100,10 @@ streamlit run app.py
 The application is built with a professional, modular architecture:
 
 - **AudioConverter**: Handles format conversion using FFmpeg
-- **SpeechToTextModel**: Manages the FunASR model and transcription
+- **SpeechToTextModel**: Manages the FunASR-ONNX model and transcription
 - **Process Pipeline**: Automated workflow for file processing and conversion
 - **Caching**: Model caching for improved performance
+- **Lightweight Backend**: Uses ONNX Runtime instead of PyTorch, reducing installation size from ~2.5GB to ~500MB
 
 ## Code Style
 
@@ -138,6 +140,6 @@ This project is open source and available under the MIT License.
 
 ## Acknowledgments
 
-- [FunASR](https://github.com/alibaba-damo-academy/FunASR) - Speech recognition framework
+- [FunASR](https://github.com/alibaba-damo-academy/FunASR) - Speech recognition framework (includes ONNX Runtime implementation)
 - [Streamlit](https://streamlit.io/) - Web application framework
 - [FFmpeg](https://ffmpeg.org/) - Audio/video processing

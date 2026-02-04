@@ -2,8 +2,9 @@
 Speech-to-Text Streamlit Application
 
 This application provides a web interface for converting audio files to text
-using FunASR. It supports various audio formats and automatically converts
-unsupported formats using FFmpeg.
+using FunASR-ONNX. It supports various audio formats and automatically converts
+unsupported formats using FFmpeg. The ONNX version provides a lightweight
+alternative to PyTorch-based models with significantly reduced dependencies.
 """
 
 import os
@@ -38,23 +39,23 @@ ACCEPTED_FORMATS = {
 @st.cache_resource
 def load_funasr_model() -> AutoModel:
     """
-    Load the FunASR model with caching to avoid reloading.
+    Load the lightweight FunASR ONNX model with caching to avoid reloading.
     
-    Note: This model (paraformer-zh) is primarily designed for Chinese language.
-    For other languages, different model configurations may be needed.
+    Note: This model (iic/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-onnx)
+    is primarily designed for Chinese language. For other languages, different model 
+    configurations may be needed.
+    
+    The ONNX version significantly reduces dependency size compared to PyTorch models.
 
     Returns:
-        AutoModel: The loaded FunASR model
+        AutoModel: The loaded FunASR ONNX model
     """
     try:
         with st.spinner("Loading speech recognition model... This may take a moment."):
             model = AutoModel(
-                model="paraformer-zh",
-                model_revision="v2.0.4",
-                vad_model="fsmn-vad",
-                vad_model_revision="v2.0.4",
-                punc_model="ct-punc",
-                punc_model_revision="v2.0.4",
+                model="iic/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-onnx",
+                vad_model="iic/speech_fsmn_vad_zh-cn-16k-common-onnx",
+                punc_model="iic/punc_ct-transformer_zh-cn-common-vocab272727-onnx",
             )
         return model
     except Exception as e:
