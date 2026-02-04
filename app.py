@@ -26,6 +26,33 @@ ACCEPTED_FORMATS = {
 }
 
 
+@st.cache_resource
+def load_funasr_model() -> AutoModel:
+    """
+    Load the FunASR model with caching to avoid reloading.
+    
+    Note: This model (paraformer-zh) is primarily designed for Chinese language.
+    For other languages, different model configurations may be needed.
+
+    Returns:
+        AutoModel: The loaded FunASR model
+    """
+    try:
+        with st.spinner("Loading speech recognition model... This may take a moment."):
+            model = AutoModel(
+                model="paraformer-zh",
+                model_revision="v2.0.4",
+                vad_model="fsmn-vad",
+                vad_model_revision="v2.0.4",
+                punc_model="ct-punc",
+                punc_model_revision="v2.0.4",
+            )
+        return model
+    except Exception as e:
+        st.error(f"Error loading model: {str(e)}")
+        st.stop()
+
+
 class AudioConverter:
     """Handles audio format conversion using FFmpeg."""
 
@@ -65,29 +92,6 @@ class SpeechToTextModel:
         """Initialize the FunASR model."""
         self.model: Optional[AutoModel] = None
 
-    @st.cache_resource
-    def load_model(_self) -> AutoModel:
-        """
-        Load the FunASR model with caching to avoid reloading.
-
-        Returns:
-            AutoModel: The loaded FunASR model
-        """
-        try:
-            with st.spinner("Loading speech recognition model... This may take a moment."):
-                model = AutoModel(
-                    model="paraformer-zh",
-                    model_revision="v2.0.4",
-                    vad_model="fsmn-vad",
-                    vad_model_revision="v2.0.4",
-                    punc_model="ct-punc",
-                    punc_model_revision="v2.0.4",
-                )
-            return model
-        except Exception as e:
-            st.error(f"Error loading model: {str(e)}")
-            st.stop()
-
     def get_model(self) -> AutoModel:
         """
         Get the loaded model, initializing it if necessary.
@@ -96,7 +100,7 @@ class SpeechToTextModel:
             AutoModel: The FunASR model instance
         """
         if self.model is None:
-            self.model = self.load_model()
+            self.model = load_funasr_model()
         return self.model
 
     def transcribe(self, audio_path: str) -> Optional[str]:
@@ -252,13 +256,18 @@ def main():
             - 📝 Copy transcription to clipboard
             - 🚀 Fast AI-powered recognition
             
+            ### Language Support
+            - 🇨🇳 Primarily supports Chinese language
+            - For other languages, model configuration may need adjustment
+            
             ### Tips
             - Use high-quality audio for best results
             - Clear speech improves accuracy
-            - Supported languages depend on the model
+            - Avoid background noise when possible
             """
         )
 
 
 if __name__ == "__main__":
     main()
+
