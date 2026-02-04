@@ -17,13 +17,8 @@ import ffmpeg
 import streamlit as st
 from funasr import AutoModel
 
-# Run FFmpeg setup check on startup
-try:
-    import setup_ffmpeg
-    setup_ffmpeg.setup_ffmpeg()
-except Exception as e:
-    # Don't fail the app if setup check fails
-    print(f"FFmpeg setup check warning: {e}")
+# FFmpeg will be checked lazily when AudioConverter is used
+# This prevents blocking the app startup and health checks
 
 
 # Supported audio formats by FunASR
