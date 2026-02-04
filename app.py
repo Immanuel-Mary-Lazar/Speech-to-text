@@ -16,6 +16,14 @@ import ffmpeg
 import streamlit as st
 from funasr import AutoModel
 
+# Run FFmpeg setup check on startup
+try:
+    import setup_ffmpeg
+    setup_ffmpeg.setup_ffmpeg()
+except Exception as e:
+    # Don't fail the app if setup check fails
+    print(f"FFmpeg setup check warning: {e}")
+
 
 # Supported audio formats by FunASR
 FUNASR_SUPPORTED_FORMATS = {".wav", ".mp3", ".flac", ".m4a", ".ogg"}
